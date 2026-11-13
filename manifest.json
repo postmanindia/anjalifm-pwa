@@ -1,0 +1,22 @@
+{
+  "name": "Anjali FM",
+  "short_name": "Anjali FM",
+  "description": "Anjali FM - Thuya Tamil Vanoli",
+  "start_url": "https://primeradios.blogspot.com/2026/11/instal-now.html",
+  "scope": "https://primeradios.blogspot.com/",
+  "display": "standalone",
+  "background_color": "#001a80",
+  "theme_color": "#001a80",
+  "icons": [
+    {
+      "src": "https://files.catbox.moe/4hajfz.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://files.catbox.moe/4hajfz.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
