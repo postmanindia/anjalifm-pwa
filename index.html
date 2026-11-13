@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ANJALI FM</title>
+<meta name="theme-color" content="#001a80">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="https://files.catbox.moe/4hajfz.png">
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Thangam+2:wght@500;700;800&family=Noto+Sans+Tamil:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;background:#001a80;overflow-x:hidden}
+body{font-family:'Baloo Thangam 2','Noto Sans Tamil',Arial,sans-serif;text-align:center}
+.main{width:100%;margin:0;padding:0 0 25px;background:#001a80}
+.rj-box{background:#fff;color:#000;margin:10px 8px;padding:12px;border:3px solid #ffff00}
+.rj-live{color:#ff0000;font-size:16px;font-weight:800}
+.rj-name{font-size:28px;font-weight:800;color:#0000ff;margin:4px 0}
+.rj-time{font-size:14px;color:#555}
+.now-box{background:#000;color:#ffff00;margin:10px 8px;padding:12px}
+.now-label{font-size:14px}
+.now-song{font-size:22px;font-weight:800;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.now-updated{font-size:12px;color:#999;margin-top:4px}
+.player-box{background:#000;margin:0;padding:14px 10px;width:100%}
+.player-box audio{width:100%;max-width:340px;height:44px}
+.play-btn{background:#ffff00;color:#000;border:2px solid #fff;padding:10px 28px;font-size:20px;font-weight:800;margin-top:8px;cursor:pointer}
+.stop-btn{background:#ff0000;color:#fff;border:2px solid #fff;padding:10px 28px;font-size:20px;font-weight:800;margin-top:8px;margin-left:6px;cursor:pointer}
+.install-btn{display:none;background:#00e676;color:#000;border:2px solid #fff;padding:10px 20px;font-size:18px;font-weight:800;margin-top:8px;cursor:pointer}
+.title{color:#fff;font-size:44px;font-weight:800;margin:10px 0 2px;line-height:1.2;white-space:nowrap}
+.subtitle{color:#ffff00;font-size:24px;font-weight:700;margin:2px 0 10px;white-space:nowrap}
+.top-logo{display:block;text-align:center;margin:4px 0 4px}
+.top-logo img{width:110px;height:auto;display:inline-block;border-radius:8px}
+.req-box{background:#b3d9ff;margin:14px 8px;padding:16px;text-align:left}
+.req-box h3{margin:0 0 12px;color:#001a80;font-size:24px;text-align:center}
+.req-box label{display:block;font-size:16px;font-weight:700;color:#001a80;margin:12px 0 5px}
+.req-box input{width:100%;padding:12px;font-size:18px;font-family:inherit;border:2px solid #001a80;outline:none;background:#fff}
+.req-btn{display:block;background:#25D366;color:#fff;text-decoration:none;padding:15px;font-size:20px;font-weight:800;text-align:center;margin-top:16px}
+.req-note{font-size:13px;color:#333;margin-top:8px;text-align:center}
+.go-home{display:block;margin:14px 0 0;text-align:center;text-decoration:none}
+.go-home img{width:70px;height:auto;display:block;margin:0 auto;border:2px solid #ffff00;border-radius:8px}
+.go-home-text{color:#fff;font-size:14px;font-weight:700;margin-top:5px;display:block}
+.foot{color:#fff;padding:20px 0;line-height:2}
+.foot a{color:#ffff66;text-decoration:none}
+@media(max-width:480px){.title{font-size:32px}.rj-name{font-size:24px}.subtitle{font-size:20px}}
+</style>
+</head>
+<body>
+<center>
+<div class="main">
+<div class="player-box">
+<audio id="anjaliAudio" controls preload="auto" autoplay>
+<source src="https://stream.zeno.fm/wklnivwx9uqtv" type="audio/mpeg">
+</audio><br>
+<button class="play-btn" onclick="playAnjali()">▶️ PLAY - அஞ்சலி FM</button>
+<button class="stop-btn" onclick="stopAnjali()">⏹️ STOP</button><br>
+<button class="install-btn" id="installBtn" onclick="installApp()">📱 Install Anjali FM App</button>
+<div style="color:#ccc;font-size:12px;margin-top:6px">STOP அழுத்தினால் Data இணைப்பு துண்டிக்கப்படும்</div>
+</div>
+<div class="title">💐 அஞ்சலி FM 💐</div>
+<div class="top-logo"><img src="https://files.catbox.moe/4hajfz.png" alt="Anjali FM"></div>
+<div class="subtitle">📡 தூய தமிழ் வானொலி 📡</div>
+<div class="rj-box">
+<div class="rj-live">🔴 இப்போது நேரலையில்</div>
+<div class="rj-name" id="rjName">RJ அஞ்சலி</div>
+<div class="rj-time" id="rjShow">காலை வணக்கம் - காலை 6 முதல் 10 மணி வரை</div>
+</div>
+<div class="now-box">
+<div class="now-label">🎵 இப்போது ஒலிபரப்பாகிறது</div>
+<div class="now-song" id="nowSong">அஞ்சலி FM - தூய தமிழ் பாடல்கள்...</div>
+<div class="now-updated" id="nowUpdated"></div>
+</div>
+<div class="req-box">
+<h3>🎤 என் விருப்ப பாடல் வேண்டுகோள்</h3>
+<label>🎵 பாடல் :</label><input id="songName" type="text" placeholder="பாடல் பெயரை எழுதுங்கள்...">
+<label>🖼️ பாடலின் படம் :</label><input id="songPhoto" type="text" placeholder="பாடல் படம் / படத்தின் பெயர்...">
+<label>👤 எனது பெயர் :</label><input id="myName" type="text" placeholder="உங்கள் பெயர்...">
+<label>📍 ஊர் :</label><input id="myPlace" type="text" placeholder="உங்கள் ஊர்...">
+<label>💝 யாருக்காக இந்த பாடலை கேட்கிறேன் :</label><input id="forWhom" type="text" placeholder="எ.கா: என் அம்மாவுக்காக...">
+<a class="req-btn" id="waBtn" href="#" target="_blank">💚 WhatsApp-இல் அனுப்புக</a>
+<div class="req-note">நீங்கள் எழுதிய அனைத்தும் அப்படியே தூய தமிழில் RJ-க்கு போகும்</div>
+</div>
+<a class="go-home" href="https://postmanindia.github.io/anjalifm-pwa/">
+<img src="https://files.catbox.moe/0keccz.jpg" alt="Home">
+<span class="go-home-text">🏠 Go to Home</span>
+</a>
+<div class="foot">Made in India<br><a href="https://radiotvsite.blogspot.com/2024/04/about-developer.html">About Developer</a></div>
+</div>
+</center>
+<script>
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }
+var deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); deferredPrompt=e; var b=document.getElementById('installBtn'); if(b) b.style.display='inline-block'; });
+function installApp(){ if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(){ deferredPrompt=null; document.getElementById('installBtn').style.display='none'; }); } else { alert('Chrome-ல மேலே ⋮ -> Add to Home screen -> Install கொடுங்க'); } }
+window.addEventListener('appinstalled',function(){ var b=document.getElementById('installBtn'); if(b) b.style.display='none'; });
+function fixTamil(s){ var t=document.createElement('textarea'); t.innerHTML=s; return t.value; }
+function playAnjali(){ var a=document.getElementById('anjaliAudio'); if(!a.querySelector('source')||!a.currentSrc){ a.innerHTML='<source src="https://stream.zeno.fm/wklnivwx9uqtv" type="audio/mpeg">'; a.load(); } a.play(); }
+function stopAnjali(){ var a=document.getElementById('anjaliAudio'); a.pause(); a.removeAttribute('src'); a.innerHTML=''; a.load(); }
+function tryAutoPlay(){ var a=document.getElementById('anjaliAudio'); if(!a) return; var p=a.play(); if(p) p.catch(function(){}); }
+window.addEventListener('load',function(){ setTimeout(tryAutoPlay,500); });
+document.addEventListener('click',function(){ var a=document.getElementById('anjaliAudio'); if(a&&a.paused&&a.querySelector('source')){ a.play(); } });
+var rjSchedule=[{from:6,to:10,name:"RJ அஞ்சலி",show:"காலை வணக்கம் - காலை 6 முதல் 10 மணி வரை"},{from:10,to:13,name:"RJ தமிழ்",show:"தமிழ் பாடல்கள் - காலை 10 முதல் மதியம் 1 மணி வரை"},{from:13,to:16,name:"RJ மலர்",show:"மதிய வணக்கம் - மதியம் 1 முதல் 4 மணி வரை"},{from:16,to:19,name:"RJ குமரன்",show:"மாலை மலர் - மாலை 4 முதல் 7 மணி வரை"},{from:19,to:22,name:"RJ அஞ்சலி",show:"இரவு வணக்கம் - இரவு 7 முதல் 10 மணி வரை"},{from:22,to:24,name:"RJ இரவு",show:"இரவு நேர பாடல்கள் - இரவு 10 முதல் 12 மணி வரை"},{from:0,to:6,name:"இரவின் மடியில்",show:"இரவு நேர பாடல்கள் - இரவு 12 முதல் காலை 6 மணி வரை"}];
+function updateRJ(){ var h=new Date().getHours(); var found=rjSchedule[0]; for(var i=0;i<rjSchedule.length;i++){ if(h>=rjSchedule[i].from&&h<rjSchedule[i].to){found=rjSchedule[i];break;} } document.getElementById('rjName').innerHTML=fixTamil(found.name); document.getElementById('rjShow').innerHTML=fixTamil(found.show); }
+updateRJ(); setInterval(updateRJ,60000);
+var ZENO_ID="wklnivwx9uqtv"; var lastGoodSong="";
+function isBadTitle(t){ if(!t) return true; var l=t.toLowerCase(); if(l.indexOf("oops")!==-1||l.indexOf("timeout")!==-1||l.indexOf("error")!==-1||l.indexOf("allorigins")!==-1) return true; if(t.length<2||t.length>200) return true; return false; }
+function cleanSongTitle(t){ t=t.replace(/_/g," ").replace(/\.mp3/gi,"").replace(/\(\s*\d+\s*k(?:bps)?\s*\)/gi,"").replace(/\s+/g," ").trim(); var parts=t.split(" - "); if(parts.length>1){ var first=parts[0].trim().toLowerCase(); var allSame=true; for(var i=1;i<parts.length;i++){ if(parts[i].trim().toLowerCase()!==first) allSame=false; } if(allSame) t=parts[0].trim(); } if(t.length>55){ t=t.substring(0,55).trim()+"..."; } return t; }
+function showLiveSong(title){ if(isBadTitle(title)) return; if(title===lastGoodSong) return; if(title.trim()==="-"||title.trim()===""||title.trim().endsWith(" -")) return; lastGoodSong=title; var clean=cleanSongTitle(title); document.getElementById('nowSong').innerHTML=fixTamil("🎵 "+clean); document.getElementById('nowUpdated').innerText="Updated: "+new Date().toLocaleTimeString("ta-IN"); }
+function parseLiveLine(line){ if(line.indexOf("data:")!==0) return; var txt=line.replace("data:",[STRIPPED] if(!txt||txt==="[DONE]") return; try{ var j=JSON.parse(txt); var t=j.streamTitle||j.title||j.now_playing||j.song||(j.data&&(j.data.streamTitle||j.data.title))||""; if(t) showLiveSong(t); }catch(e){ if(txt.length>2&&txt.length<200) showLiveSong(txt); } }
+function tryLiveSSE(){ try{ var es=new EventSource("https://api.zeno.fm/mounts/metadata/subscribe/"+ZENO_ID); es.onmessage=function(e){ parseLiveLine("data:"+e.data); }; es.onerror=function(){ es.close(); setTimeout(tryLiveProxy,1000); }; setTimeout(function(){ if(!lastGoodSong){ es.close(); tryLiveProxy(); } },10000); }catch(e){ tryLiveProxy(); } }
+async function tryLiveProxy(){ if(lastGoodSong) return; var target="https://api.zeno.fm/mounts/metadata/subscribe/"+ZENO_ID; var urls=["https://api.allorigins.win/raw?url="+encodeURIComponent(target),"https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(target)]; for(var i=0;i<urls.length;i++){ try{ var res=await fetch(urls[i]); var reader=res.body.getReader(); var decoder=new TextDecoder(); var buf=""; while(true){ var r=await reader.read(); if(r.done) break; buf+=decoder.decode(r.value,{stream:true}); var lines=buf.split("\n"); buf=lines.pop(); for(var k=0;k<lines.length;k++) parseLiveLine(lines[k].trim()); if(lastGoodSong) return; if(buf.length>5000) break; } }catch(e){ continue; } } }
+tryLiveSSE();
+var WA_NUMBER="919020120140";
+document.getElementById('waBtn').onclick=function(){ var song=document.getElementById('songName').value.trim(); var photo=document.getElementById('songPhoto').value.trim(); var name=document.getElementById('myName').value.trim(); var place=document.getElementById('myPlace').value.trim(); var forWhom=document.getElementById('forWhom').value.trim(); if(!song){ alert(fixTamil("தயவுசெய்து பாடல் பெயரை எழுதுங்கள்")); return false; } if(!name){ alert(fixTamil("தயவுசெய்து உங்கள் பெயரை எழுதுங்கள்")); return false; } var rawMsg="வணக்கம் அஞ்சலி FM! 🙏\n\n"+"🎵 பாடல் : "+song+"\n"+"🖼️ பாடலின் படம் : "+(photo?photo:"இல்லை")+"\n"+"👤 எனது பெயர் : "+name+"\n"+"📍 ஊர் : "+(place?place:"இல்லை")+"\n"+"💝 யாருக்காக இந்த பாடலை கேட்கிறேன் : "+(forWhom?forWhom:"இல்லை")+"\n\n"+"இந்த பாடலை ஒலிபரப்பவும். நன்றி!"; var cleanMsg=fixTamil(rawMsg); this.href="https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(cleanMsg); };
+</script>
+</body>
+</html>
